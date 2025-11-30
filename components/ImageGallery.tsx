@@ -25,6 +25,11 @@ export default function ImageGallery({ images, title }: ImageGalleryProps) {
   const mainImage = images[0];
   const gridImages = images.slice(1, 5);
 
+  // Changed: Added undefined check for mainImage to satisfy TypeScript noUncheckedIndexedAccess
+  if (!mainImage) {
+    return null;
+  }
+
   return (
     <>
       <div className="relative">
