@@ -3,6 +3,7 @@ import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import CosmicBadge from '@/components/CosmicBadge';
+import ScrollToTop from '@/components/ScrollToTop';
 
 export const metadata: Metadata = {
   title: 'StayScape - Vacation Rentals, Cabins, Villas & Unique Homes',
@@ -23,6 +24,7 @@ export default function RootLayout({
         <script src="/dashboard-console-capture.js" />
       </head>
       <body className="min-h-screen flex flex-col bg-neutral-50">
+        <ScrollToTop />
         <Header />
         <main className="flex-1">
           {children}
