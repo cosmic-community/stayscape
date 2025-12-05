@@ -20,13 +20,29 @@ export default async function CategoriesPage() {
     ).length,
   }));
 
+  // Select a featured category for the hero background (using the first category with an icon)
+  const heroCategory = categories.find(category => category.metadata.icon) || categories[0];
+
   return (
     <div>
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-primary-500 to-primary-700 text-white py-16 md:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Hero Section with Background Image */}
+      <section className="relative py-16 md:py-24">
+        {/* Background Image */}
+        {heroCategory?.metadata.icon && (
+          <img
+            src={`${heroCategory.metadata.icon.imgix_url}?w=2000&h=1000&fit=crop&auto=format,compress`}
+            alt={heroCategory.metadata.name}
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        )}
+        
+        {/* Black Opacity Overlay */}
+        <div className="absolute inset-0 bg-black/60" />
+        
+        {/* Content */}
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white">
               Browse by Category
             </h1>
             <p className="text-xl text-white/90 max-w-2xl mx-auto">
