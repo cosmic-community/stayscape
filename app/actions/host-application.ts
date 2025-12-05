@@ -1,50 +1,62 @@
-'use server';
+'use server'
 
-import { createHostApplication } from '@/lib/cosmic';
+import { createBucketClient } from '@cosmicjs/sdk'
 
-export async function submitHostApplication(formData: FormData) {
-  // Extract and validate form data
-  const full_name = formData.get('full_name') as string;
-  const email = formData.get('email') as string;
-  const phone = formData.get('phone') as string;
-  const property_address = formData.get('property_address') as string;
-  const property_type = formData.get('property_type') as string;
-  const number_of_rooms = parseInt(formData.get('number_of_rooms') as string, 10);
-  const description = formData.get('description') as string;
-  const experience = (formData.get('experience') as string) || '';
+const cosmic = createBucketClient({
+  bucketSlug: process.env.COSMIC_BUCKET_SLUG as string,
+  readKey: process.env.COSMIC_READ_KEY as string,
+  writeKey: process.env.COSMIC_WRITE_KEY as string,
+})
 
-  // Validate required fields
-  if (!full_name || !email || !phone || !property_address || !property_type || !number_of_rooms || !description) {
-    throw new Error('Please fill in all required fields');
-  }
+export interface HostApplicationFormData {
+  fullName: string;
+  email: string;
+  phone: string;
+  propertyName: string;
+  propertyType: string;
+  location: string;
+  description: string;
+  whyHost: string;
+}
 
-  // Validate email format
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) {
-    throw new Error('Please enter a valid email address');
-  }
-
-  // Validate number of rooms is positive
-  if (number_of_rooms < 1) {
-    throw new Error('Number of bedrooms must be at least 1');
-  }
-
+export async function submitHostApplication(formData: HostApplicationFormData) {
   try {
-    // Create the host application in Cosmic
-    await createHostApplication({
-      full_name,
-      email,
-      phone,
-      property_address,
-      property_type,
-      number_of_rooms,
-      description,
-      experience,
-    });
+    // Validate required fields
+    if (!formData.fullName || !formData.email || !formData.phone) {
+      return {
+        success: false,
+        error: 'Please fill in all required fields',
+      }
+    }
 
-    return { success: true };
+    // Create the host application object in Cosmic
+    const response = await cosmic.objects.insertOne({
+      title: `${formData.fullName} - Host Application`,
+      type: 'host-applications',
+      status: 'published',
+      metadata: {
+        full_name: formData.fullName,
+        email: formData.email,
+        phone: formData.phone,
+        property_name: formData.propertyName,
+        property_type: formData.propertyType,
+        location: formData.location,
+        description: formData.description,
+        why_host: formData.whyHost,
+        application_status: 'Pending Review',
+        submitted_at: new Date().toISOString(),
+      },
+    })
+
+    return {
+      success: true,
+      data: response.object,
+    }
   } catch (error) {
-    console.error('Failed to submit host application:', error);
-    throw new Error('Failed to submit application. Please try again later.');
+    console.error('Error submitting host application:', error)
+    return {
+      success: false,
+      error: 'Failed to submit application. Please try again.',
+    }
   }
 }
