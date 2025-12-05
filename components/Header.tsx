@@ -37,9 +37,12 @@ export default function Header() {
 
           {/* Right Side Actions */}
           <div className="flex items-center gap-4">
-            <button className="hidden md:block text-neutral-700 hover:text-primary font-medium transition-colors">
+            <Link 
+              href="/become-a-host"
+              className="hidden md:block text-neutral-700 hover:text-primary font-medium transition-colors"
+            >
               Become a host
-            </button>
+            </Link>
             
             {/* User Menu */}
             <button className="flex items-center gap-2 border border-neutral-300 rounded-full py-2 px-4 hover:shadow-md transition-shadow">

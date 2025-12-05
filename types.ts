@@ -63,6 +63,22 @@ export interface Host extends CosmicObject {
   };
 }
 
+// Host Application type
+export interface HostApplication extends CosmicObject {
+  type: 'host-applications';
+  metadata: {
+    full_name: string;
+    email: string;
+    phone: string;
+    property_address: string;
+    property_type: string;
+    number_of_rooms: number;
+    description: string;
+    experience: string;
+    status: 'Pending' | 'Approved' | 'Rejected';
+  };
+}
+
 // Listing type
 export interface Listing extends CosmicObject {
   type: 'listings';
