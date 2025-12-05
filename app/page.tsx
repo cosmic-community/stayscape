@@ -10,14 +10,29 @@ export default async function HomePage() {
     getCategories(),
   ]);
 
+  // Select a featured listing for the hero (using the first listing with a featured image)
+  const heroListing = listings.find(listing => listing.metadata.featured_image) || listings[0];
+
   return (
     <div>
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-primary-500 to-primary-700 text-white">
-        <div className="absolute inset-0 bg-black/20" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32">
+      {/* Hero Section with Listing Image */}
+      <section className="relative h-[600px] md:h-[700px]">
+        {/* Background Image */}
+        {heroListing?.metadata.featured_image && (
+          <img
+            src={`${heroListing.metadata.featured_image.imgix_url}?w=2000&h=1400&fit=crop&auto=format,compress`}
+            alt={heroListing.metadata.property_name}
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        )}
+        
+        {/* Black Opacity Overlay */}
+        <div className="absolute inset-0 bg-black/50" />
+        
+        {/* Content */}
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
           <div className="max-w-3xl">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-white">
               Find your perfect getaway
             </h1>
             <p className="text-xl md:text-2xl text-white/90 mb-8">
