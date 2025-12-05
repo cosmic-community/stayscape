@@ -28,7 +28,7 @@ export default function Header() {
               Explore
             </Link>
             <Link 
-              href="/#categories" 
+              href="/categories" 
               className="text-neutral-700 hover:text-primary font-medium transition-colors"
             >
               Categories
