@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   title: 'StayScape - Vacation Rentals, Cabins, Villas & Unique Homes',
   description: 'Find your perfect getaway with StayScape. Browse vacation rentals, cabins, beachfront villas, and unique homes worldwide.',
   keywords: ['vacation rentals', 'cabins', 'villas', 'beach houses', 'airbnb clone', 'travel'],
+  icons: {
+    icon: '/favicon.svg',
+  },
 };
 
 export default function RootLayout({
